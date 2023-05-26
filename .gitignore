@@ -1,4 +1,3 @@
-*.txt
 *.bin
 *.bz2
 train_data
@@ -9,3 +8,6 @@ wandb
 checkpoint*
 __pycache__
 eval/preprocess/
+data/
+bruk_corpus/
+.DS_Store
