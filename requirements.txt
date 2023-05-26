@@ -3,3 +3,4 @@ beautifulsoup4==4.12.2
 wechsel==0.0.4
 transformers==4.28.1
 wandb==0.15.2
+torch==2.0.1

@@ -1,8 +1,8 @@
 {
-    "output_dir": "exps",
+    "output_dir": "exps/gpt2-small.oscar.nofilter.scratch",
     "model_type": "gpt2",
-    "config_name": "gpt2-small.oscar.nofilter.scratch",
-    "tokenizer_name": "gpt2-small.oscar.nofilter.scratch",
+    "config_name": "exps/gpt2-small.oscar.nofilter.scratch",
+    "tokenizer_name": "exps/gpt2-small.oscar.nofilter.scratch",
     "train_file": "data/oscar.nofilter",
     "block_size": 1024,
     "do_train": true,

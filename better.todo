@@ -7,6 +7,7 @@ Experiments:
     ☐ Try to reproduce original results
     ☐ Verify that weights transfer works correctly and has visible effect on the model performance
     ☐ Find the way to resume training from the checkpoint together with LR schedule
+    ☐ Try to use different tokenizer from uk4b
     ☐ Try to use better en-uk dictionaries
     ☐ Try training model on different fasttext embeddings
     ☐ Try training model on bigger dataset
