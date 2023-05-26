@@ -124,9 +124,10 @@ if __name__ == "__main__":
     train_dataset = load_dataset(
         path=args.dataset, name=args.dataset_name, split="train"
     )
-    train_dataset = train_dataset.filter(
-        lambda example: n_overlap(example) == 0, num_proc=multiprocessing.cpu_count()
-    )
+    if not args.disable_filter:
+        train_dataset = train_dataset.filter(
+            lambda example: n_overlap(example) == 0, num_proc=multiprocessing.cpu_count()
+        )
 
     # Save the train dataset to disk
     train_dataset.save_to_disk(data_destination / args.output)
