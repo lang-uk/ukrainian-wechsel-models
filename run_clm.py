@@ -268,8 +268,10 @@ def main():
         "use_auth_token": True if model_args.use_auth_token else None,
     }
     if model_args.config_name:
+        logger.info(f"Loading config from: {model_args.config_name}")
         config = AutoConfig.from_pretrained(model_args.config_name, **config_kwargs)
     elif model_args.model_name_or_path:
+        logger.info(f"Loading config from: {model_args.model_name_or_path}")
         config = AutoConfig.from_pretrained(model_args.model_name_or_path, **config_kwargs)
     else:
         config = CONFIG_MAPPING[model_args.model_type]()
@@ -296,6 +298,7 @@ def main():
         )
 
     if model_args.model_name_or_path:
+        logger.info(f"Loading pretrained model {model_args.model_name_or_path}")
         model = AutoModelForCausalLM.from_pretrained(
             model_args.model_name_or_path,
             from_tf=bool(".ckpt" in model_args.model_name_or_path),
@@ -305,6 +308,7 @@ def main():
             use_auth_token=True if model_args.use_auth_token else None,
         )
     else:
+        logger.info("Training new model from scratch using config {config}")
         model = AutoModelForCausalLM.from_config(config)
         n_params = sum(dict((p.data_ptr(), p.numel()) for p in model.parameters()).values())
         logger.info(f"Training new model from scratch - Total size={n_params/2**20:.2f}M params")

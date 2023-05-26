@@ -80,6 +80,12 @@ if __name__ == "__main__":
         "--dataset-name", default=None, help="Name of the dataset to use for training"
     )
     parser.add_argument(
+        "--disable-filter",
+        action="store_true",
+        help="Disable filtering of the dataset against validation dataset",
+        default=False,
+    )
+    parser.add_argument(
         "--bruk-repo",
         default="https://github.com/brown-uk/corpus",
         help="Url of the bruk repo",
@@ -126,5 +132,7 @@ if __name__ == "__main__":
     train_dataset.save_to_disk(data_destination / args.output)
 
     # Save the validation dataset to disk
-    with open(data_destination / "bruk_valid_data.txt", "w", encoding="utf-8") as fp_out:
+    with open(
+        data_destination / "bruk_valid_data.txt", "w", encoding="utf-8"
+    ) as fp_out:
         fp_out.write("\n".join(articles))
