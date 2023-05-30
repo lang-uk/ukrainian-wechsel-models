@@ -19,6 +19,7 @@ class Args:
     task: str
     source_word_vector_path: str
     target_word_vector_path: str
+    bilingual_dictionary: str = "ukrainian"
     new_tokenizer_name: str = None
 
 def main(args):
@@ -63,7 +64,7 @@ def main(args):
     wechsel = WECHSEL(
         fasttext.load_model(args.source_word_vector_path),
         fasttext.load_model(args.target_word_vector_path),
-        bilingual_dictionary="ukrainian"
+        bilingual_dictionary=args.bilingual_dictionary,
     )
 
     target_embeddings, info = wechsel.apply(
