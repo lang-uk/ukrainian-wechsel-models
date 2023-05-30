@@ -25,7 +25,7 @@ def load_bruk_corpus(path: str, max_bytes: int) -> List[str]:
     total_bytes = 0
     result: List[str] = []
 
-    # At first we load the good and so-so part of the bruk corpus, to create a validation dataset
+    # At first we load the good part of the bruk corpus, to create a validation dataset
     for path in tqdm(sorted(glob.glob(path))):
         with open(path, "r", encoding="utf-8") as f:
             text = f.read().strip()
