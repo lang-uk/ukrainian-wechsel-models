@@ -4,11 +4,11 @@ Improvements and refactoring:
     ✔ Make changes to run_clm.py scripts to run validation during the training @done (26/05/2023, 18:13:45)
     ✔ Organize configs and directories @done (26/05/2023, 21:38:50)
 Experiments:
-    ☐ Try to reproduce original results
-    ☐ Verify that weights transfer works correctly and has visible effect on the model performance
+    ✔ Try to reproduce original results @done (31/05/2023, 14:47:52)
+    ✔ Verify that weights transfer works correctly and has visible effect on the model performance @done (31/05/2023, 14:47:49)
     ☐ Find the way to resume training from the checkpoint together with LR schedule
     ☐ Try to use different tokenizer from uk4b
-    ☐ Try to use better en-uk dictionaries
+    ✔ Try to use better en-uk dictionaries @done (31/05/2023, 14:47:55)
     ☐ Try training model on different fasttext embeddings
     ☐ Try training model on bigger dataset
     ☐ Mosaic?
