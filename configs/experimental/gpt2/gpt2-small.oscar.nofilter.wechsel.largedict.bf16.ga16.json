@@ -1,8 +1,8 @@
 {
-    "output_dir": "exps/gpt2-small.oscar.nofilter.wechsel.largedict.bf16.la16",
+    "output_dir": "exps/gpt2-small.oscar.nofilter.wechsel.largedict.bf16.ga16",
     "model_type": "gpt2",
-    "config_name": "exps/gpt2-small.oscar.nofilter.wechsel.largedict.bf16.la16",
-    "tokenizer_name": "exps/gpt2-small.oscar.nofilter.wechsel.largedict.bf16.la16",
+    "config_name": "exps/gpt2-small.oscar.nofilter.wechsel.largedict.bf16.ga16",
+    "tokenizer_name": "exps/gpt2-small.oscar.nofilter.wechsel.largedict.bf16.ga16",
     "train_file": "data/oscar.nofilter",
     "block_size": 1024,
     "do_train": true,
@@ -24,7 +24,7 @@
     "adam_beta1": 0.9,
     "adam_beta2": 0.98,
     "adam_epsilon": 1e-6,
-    "model_name_or_path": "exps/gpt2-small.oscar.nofilter.wechsel.largedict.bf16.la16",
+    "model_name_or_path": "exps/gpt2-small.oscar.nofilter.wechsel.largedict.bf16.ga16",
     "preprocessing_num_workers": 48,
     "bf16": true
 }
