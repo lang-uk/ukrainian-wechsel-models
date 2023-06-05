@@ -13,6 +13,8 @@ Experiments:
     ☐ Try training model on bigger dataset
     ✔ Try training with bf16 @done (02/06/2023, 14:49:09)
     ✔ Try training with 4x gradient accumulation @done (02/06/2023, 14:49:10)
-    ☐ Try training with Sophia-G
+    ✔ Try training with Sophia-G @done (05/06/2023, 12:07:37)
+    ☐ Try better Sophia implementation
+    ☐ Lion optimizer
     ☐ Mosaic?
 

@@ -50,7 +50,7 @@ from transformers.testing_utils import CaptureLogger
 from transformers.trainer_utils import get_last_checkpoint
 from transformers.utils import check_min_version
 from transformers.utils.versions import require_version
-from Sophia.Sophia import DecoupledSophia
+from optimizers.sophia import SophiaG
 
 
 # Will error if the minimal version of Transformers is not installed. Remove at your own risks.
@@ -214,7 +214,7 @@ def main():
     # Log on each process the small summary:
     logger.warning(
         f"Process rank: {training_args.local_rank}, device: {training_args.device}, n_gpu: {training_args.n_gpu}"
-        + f"distributed training: {bool(training_args.local_rank != -1)}, 16-bits training: {training_args.fp16}"
+        + f"distributed training: {bool(training_args.local_rank != -1)}, 16-bits training: fp16: {training_args.fp16}, bf16: {training_args.bf16}"
     )
     logger.info(f"Training/evaluation parameters {training_args}")
 
@@ -438,7 +438,12 @@ def main():
         wandb.config.update(data_args)
         wandb.save(__file__, policy="now")
 
-    optimizer = DecoupledSophia(model.parameters(), lr=1e-3, betas=(0.9, 0.999), rho=0.04, weight_decay=1e-1, k=10, estimator="Hutchinson")
+    optimizer = SophiaG(
+        filter(lambda p: p.requires_grad, model.parameters()),
+        lr=training_args.learning_rate,
+        weight_decay=training_args.weight_decay,
+        betas=(training_args.adam_beta1, training_args.adam_beta2),
+    )
 
     # Initialize our Trainer
     trainer = Trainer(
