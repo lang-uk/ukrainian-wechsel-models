@@ -32,8 +32,10 @@ def transform_doc(fname: str, doc: Dict) -> Dict:
     if "compound_id" not in doc:
         doc["compound_id"] = f"{fname}.{doc['id']}"
 
-    if "title" in doc and not doc["text"].startswith(doc["title"].strip()):
-        doc["text"] = doc["title"].strip() + "\n\n" + doc["text"]
+    if "title" in doc:
+        title: str = doc["title"].strip()
+        if title and not doc["text"].startswith(title):
+            doc["text"] = title + "\n\n" + doc["text"]
 
     return {f: doc[f] for f in ["id", "compound_id", "text"]}
 
@@ -56,7 +58,10 @@ if __name__ == "__main__":
 
     for filename in tqdm(glob.glob(args.input), desc="Processing files"):
         with smart_open.open(filename, "rt", encoding="utf-8") as reader:
-            for doc in map(json.loads, tqdm(reader, desc=f"Processing docs from {filename}", leave=False)):
+            for doc in map(
+                json.loads,
+                tqdm(reader, desc=f"Processing docs from {filename}", leave=False),
+            ):
                 print(doc)
                 print(transform_doc(filename, doc))
                 dataset.add_item(transform_doc(filename, doc))
