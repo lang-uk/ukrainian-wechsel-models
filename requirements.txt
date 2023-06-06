@@ -5,3 +5,4 @@ transformers==4.28.1
 wandb==0.15.2
 torch==2.0.1
 w3lib==2.1.1
+tqdm==4.65.0
