@@ -35,7 +35,7 @@ def transform_doc(fname: str, doc: Dict) -> Dict:
     if "title" in doc and not doc["text"].startswith(doc["title"].strip()):
         doc["text"] = doc["title"].strip() + "\n\n" + doc["text"]
 
-    return {doc[f] for f in ["id", "compound_id", "text"]}
+    return {f: doc[f] for f in ["id", "compound_id", "text"]}
 
 
 smart_open.register_compressor(".xz", _handle_xz)
