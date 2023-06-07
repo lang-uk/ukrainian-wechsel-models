@@ -25,5 +25,6 @@
     "preprocessing_num_workers": 48,
     "fp16": true,
     "adam_beta1": 0.965,
-    "adam_beta2": 0.99
+    "adam_beta2": 0.99,
+    "wandb_project": "mpt-7b-experiments"
 }
