@@ -275,10 +275,10 @@ def main():
     }
     if model_args.config_name:
         logger.info(f"Loading config from: {model_args.config_name}")
-        config = AutoConfig.from_pretrained(model_args.config_name, **config_kwargs)
+        config = AutoConfig.from_pretrained(model_args.config_name, trust_remote_code=True, **config_kwargs)
     elif model_args.model_name_or_path:
         logger.info(f"Loading config from: {model_args.model_name_or_path}")
-        config = AutoConfig.from_pretrained(model_args.model_name_or_path, **config_kwargs)
+        config = AutoConfig.from_pretrained(model_args.model_name_or_path, trust_remote_code=True, **config_kwargs)
     else:
         config = CONFIG_MAPPING[model_args.model_type]()
         logger.warning("You are instantiating a new config instance from scratch.")
