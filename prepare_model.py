@@ -31,7 +31,7 @@ def main(args):
     output_dir.mkdir(exist_ok=True, parents=True)
 
     # create configuration
-    config = AutoConfig.from_pretrained(args.model_name, trust_remote_code=True))
+    config = AutoConfig.from_pretrained(args.model_name, trust_remote_code=True)
     config.save_pretrained(output_dir)
 
     def batch_iterator(batch_size=1000):
@@ -57,9 +57,9 @@ def main(args):
     )
 
     if args.task == "clm":
-        model = AutoModelForCausalLM.from_pretrained(args.model_name, trust_remote_code=True))
+        model = AutoModelForCausalLM.from_pretrained(args.model_name, trust_remote_code=True)
     elif args.task == "mlm":
-        model = AutoModelForMaskedLM.from_pretrained(args.model_name, trust_remote_code=True))
+        model = AutoModelForMaskedLM.from_pretrained(args.model_name, trust_remote_code=True)
 
     wechsel = WECHSEL(
         fasttext.load_model(args.source_word_vector_path),
