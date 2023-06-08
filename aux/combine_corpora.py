@@ -6,6 +6,7 @@ import argparse
 import lzma
 import glob
 import json
+import os.path
 import multiprocessing
 from functools import partial
 from itertools import islice
@@ -98,7 +99,7 @@ if __name__ == "__main__":
                         for record in pool.imap(
                             partial(
                                 transform_doc,
-                                fname=filename,
+                                fname=os.path.basename(filename),
                             ),
                             chunk,
                         ):
