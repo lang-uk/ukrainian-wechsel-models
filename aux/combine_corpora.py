@@ -36,7 +36,7 @@ def batch_iterator(iterator: Iterator[T], batch_size: int = 50) -> Iterator[List
         yield batch
 
 
-def transform_doc(doc: Dict, fname: str) -> Dict:
+def transform_doc(doc: str, fname: str) -> Dict:
     """
     Render doc into the jsonl format suitable for Wechsel
     Args:
@@ -45,7 +45,7 @@ def transform_doc(doc: Dict, fname: str) -> Dict:
     Returns:
         dict with the doc in the format suitable for Wechsel
     """
-
+    doc = json.loads(doc)
     if "id" not in doc:
         doc["id"] = doc["_id"]
 
