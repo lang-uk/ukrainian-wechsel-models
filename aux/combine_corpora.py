@@ -1,19 +1,39 @@
 """
 Combine corpora from jsonlines into an arrow file.
 """
-from typing import Dict
+from typing import List, Iterator, TypeVar, Dict
 import argparse
 import lzma
 import glob
 import json
+import multiprocessing
+from functools import partial
+from itertools import islice
+
 
 from tqdm import tqdm
-import datasets
 import smart_open
+
+T = TypeVar("T")
 
 
 def _handle_xz(file_obj, mode):
     return lzma.LZMAFile(filename=file_obj, mode=mode, format=lzma.FORMAT_XZ)
+
+
+def batch_iterator(iterator: Iterator[T], batch_size: int = 50) -> Iterator[List[T]]:
+    """
+    Iterates over the given iterator in batches.
+    iterator: the iterator to iterate over
+    batch_size: the size of the batch
+    returns an iterator over batches
+    """
+    iterator = iter(iterator)
+    while True:
+        batch = list(islice(iterator, batch_size))
+        if not batch:
+            return
+        yield batch
 
 
 def transform_doc(fname: str, doc: Dict) -> Dict:
@@ -42,9 +62,9 @@ def transform_doc(fname: str, doc: Dict) -> Dict:
     return {f: doc[f] for f in ["id", "compound_id", "text"]}
 
 
-smart_open.register_compressor(".xz", _handle_xz)
-
 if __name__ == "__main__":
+    smart_open.register_compressor(".xz", _handle_xz)
+
     parser = argparse.ArgumentParser(
         description="Combine corpora from jsonlines into an arrow file."
     )
@@ -52,18 +72,37 @@ if __name__ == "__main__":
         "input",
         help="input glob pattern for jsonlines files",
     )
-    parser.add_argument("output", help="output arrow file")
+    parser.add_argument("output", help="output jsonlines file")
+    parser.add_argument(
+        "--num-processes",
+        type=int,
+        default=multiprocessing.cpu_count(),
+        help="number of processes to use for parallel processing",
+    )
 
     args = parser.parse_args()
 
-    dataset = datasets.Dataset.from_dict({"id": [], "compound_id": [], "text": []})
+    with smart_open.open(args.output, "wt", encoding="utf-8") as writer:
+        for filename in tqdm(glob.glob(args.input), desc="Processing files"):
+            with smart_open.open(filename, "rt", encoding="utf-8") as reader:
+                with multiprocessing.Pool(
+                    processes=args.num_processes,
+                ) as pool:
+                    for chunk in batch_iterator(
+                        tqdm(reader, desc=f"Processing docs from {filename}"),
+                        batch_size=10000,
+                    ):
+                        if not chunk:
+                            break
 
-    for filename in tqdm(glob.glob(args.input), desc="Processing files"):
-        with smart_open.open(filename, "rt", encoding="utf-8") as reader:
-            for doc in map(
-                json.loads,
-                tqdm(reader, desc=f"Processing docs from {filename}", leave=False),
-            ):
-                dataset.add_item(transform_doc(filename, doc))
-
-    dataset.save_to_disk(args.output)
+                        for record in pool.imap(
+                            partial(
+                                transform_doc,
+                                fname=filename,
+                            ),
+                            chunk,
+                        ):
+                            writer.write(
+                                json.dumps(record, ensure_ascii=False, sort_keys=True)
+                                + "\n"
+                            )
