@@ -36,7 +36,7 @@ def batch_iterator(iterator: Iterator[T], batch_size: int = 50) -> Iterator[List
         yield batch
 
 
-def transform_doc(fname: str, doc: Dict) -> Dict:
+def transform_doc(doc: Dict, fname: str) -> Dict:
     """
     Render doc into the jsonl format suitable for Wechsel
     Args:
