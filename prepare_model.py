@@ -75,7 +75,7 @@ def main(args):
 
     np.save(output_dir / "info.npy", info)
     model.get_input_embeddings().weight.data = torch.from_numpy(target_embeddings)
-    model.save_pretrained(args.output_dir)
+    model.save_pretrained(args.output_dir, max_shard_size="100GB")
 
 if __name__ == "__main__":
     parser = HfArgumentParser([Args])
