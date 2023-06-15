@@ -171,6 +171,12 @@ class DataTrainingArguments:
         default=True, metadata={"help": "Whether to keep line breaks when using TXT files or not."}
     )
 
+    wandb_project: Optional[str] = field(
+        default="gpt-2-small-experiments",
+        metadata={"help": "The name of the project to which the training run will belong on Weights & Biases."}   
+    )
+
+
 
 def main():
     # See all possible arguments in src/transformers/training_args.py
