@@ -175,6 +175,11 @@ class DataTrainingArguments:
         },
     )
 
+    wandb_project: Optional[str] = field(
+        default="roberta-experiments",
+        metadata={"help": "The name of the project to which the training run will belong on Weights & Biases."}   
+    )
+
 
 class DataCollatorForLanguageModeling(transformers.DataCollatorForLanguageModeling):
     def torch_mask_tokens(self, inputs, special_tokens_mask = None):
@@ -279,7 +284,7 @@ def main():
     # download the dataset.
     raw_datasets = {}
 
-    for (name, path) in [("train", data_args.train_file)]:
+    for (name, path) in [("train", data_args.train_file), ("validation", data_args.validation_file)]:
         if path.endswith(".txt"):
             raw_datasets[name] = datasets.Dataset.from_dict({"text": [open(path).read()], "id": [0]})
         else:
@@ -489,7 +494,7 @@ def main():
 
     if training_args.process_index == 0 and training_args.do_train and "wandb" in training_args.report_to:
         wandb.init(
-            project="ukrainian-nlp",
+            project=data_args.wandb_project,
             name=os.path.basename(training_args.output_dir),
         )
 
