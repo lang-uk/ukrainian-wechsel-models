@@ -434,7 +434,7 @@ def main():
 
     if training_args.process_index == 0 and training_args.do_train and "wandb" in training_args.report_to:
         wandb.init(
-            project="gpt-2-small-experiments",
+            project=data_args.wandb_project,
             name=os.path.basename(training_args.output_dir),
         )
 
