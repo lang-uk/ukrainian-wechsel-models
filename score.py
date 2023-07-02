@@ -40,5 +40,5 @@ for i, sentence in enumerate(s.strip() for f in args.sentences or [] for s in f.
     bpc = log_prob / math.log(2) / len(sentence)
     bpb = log_prob / math.log(2) / len(sentence_bytes)
 
-    id = sha1(sentence_bytes).hexdigest()
-    print(id, sentence, x.size(-1), log_prob, bpc, bpb, sep='\t', flush=True)
+    id_ = sha1(sentence_bytes).hexdigest()
+    print(id_, sentence, x.size(-1), log_prob, bpc, bpb, sep='\t', flush=True)

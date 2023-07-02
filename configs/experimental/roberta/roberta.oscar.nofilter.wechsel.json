@@ -1,7 +1,8 @@
 {
-    "output_dir": "exps/roberta.oscar.nofilter.scratch",
+    "output_dir": "exps/roberta.oscar.nofilter.wechsel",
     "model_type": "roberta",
-    "tokenizer_name": "exps/roberta.oscar.nofilter.scratch",
+    "config_name": "exps/roberta.oscar.nofilter.wechsel",
+    "tokenizer_name": "exps/roberta.oscar.nofilter.wechsel",
     "train_file": "data/oscar.nofilter",
     "max_seq_length": 512,
     "do_train": true,
