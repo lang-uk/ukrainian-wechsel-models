@@ -25,5 +25,6 @@
     "adam_beta2": 0.98,
     "adam_epsilon": 1e-6,
     "preprocessing_num_workers": 48,
-    "fp16": true
+    "fp16": true,
+    "model_name_or_path": "exps/roberta.oscar.nofilter.wechsel"
 }
