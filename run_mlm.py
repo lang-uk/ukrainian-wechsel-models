@@ -180,6 +180,11 @@ class DataTrainingArguments:
         metadata={"help": "The name of the project to which the training run will belong on Weights & Biases."}   
     )
 
+    optimizer: Optional[str] = field(
+        default="adam",
+        metadata={"help": "The optimizer to use for training."}
+    )
+
 
 class DataCollatorForLanguageModeling(transformers.DataCollatorForLanguageModeling):
     def torch_mask_tokens(self, inputs, special_tokens_mask = None):
@@ -503,17 +508,40 @@ def main():
         wandb.config.update(data_args)
         wandb.save(__file__, policy="now")
 
-    # Initialize our Trainer
-    trainer = Trainer(
-        model=model,
-        args=training_args,
-        train_dataset=train_dataset if training_args.do_train else None,
-        eval_dataset=eval_dataset if training_args.do_eval else None,
-        tokenizer=tokenizer,
-        data_collator=data_collator,
-        compute_metrics=compute_metrics if training_args.do_eval else None,
-        preprocess_logits_for_metrics=preprocess_logits_for_metrics if training_args.do_eval else None,
-    )
+    if data_args.optimizer == "adam":
+        # Initialize our Trainer
+        trainer = Trainer(
+            model=model,
+            args=training_args,
+            train_dataset=train_dataset if training_args.do_train else None,
+            eval_dataset=eval_dataset if training_args.do_eval else None,
+            tokenizer=tokenizer,
+            data_collator=data_collator,
+            compute_metrics=compute_metrics if training_args.do_eval else None,
+            preprocess_logits_for_metrics=preprocess_logits_for_metrics if training_args.do_eval else None,
+        )
+    elif data_args.optimizer == "sophia":
+        from optimizers.sophia import SophiaG
+        optimizer = SophiaG(
+            filter(lambda p: p.requires_grad, model.parameters()),
+            lr=training_args.learning_rate,
+            weight_decay=training_args.weight_decay,
+            betas=(training_args.adam_beta1, training_args.adam_beta2),
+        )
+
+        trainer = Trainer(
+            model=model,
+            args=training_args,
+            train_dataset=train_dataset if training_args.do_train else None,
+            eval_dataset=eval_dataset if training_args.do_eval else None,
+            tokenizer=tokenizer,
+            data_collator=data_collator,
+            compute_metrics=compute_metrics if training_args.do_eval else None,
+            preprocess_logits_for_metrics=preprocess_logits_for_metrics if training_args.do_eval else None,
+            optimizers=(optimizer, None),
+        )
+    else:
+        raise ValueError("Optimizer not supported")
 
     # Training
     if training_args.do_train:
