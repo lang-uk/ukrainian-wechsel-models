@@ -1,8 +1,8 @@
 {
-    "output_dir": "exps/roberta.malyuk.filter.wechsel.largedict.sophia",
+    "output_dir": "exps/roberta.malyuk.filter.wechsel.largedict.sophia.run3",
     "model_type": "roberta",
-    "config_name": "exps/roberta.malyuk.filter.wechsel.largedict.sophia",
-    "tokenizer_name": "exps/roberta.malyuk.filter.wechsel.largedict.sophia",
+    "config_name": "exps/roberta.malyuk.filter.wechsel.largedict.sophia.run3",
+    "tokenizer_name": "exps/roberta.malyuk.filter.wechsel.largedict.sophia.run3",
     "train_file": "data/malyuk.filter",
     "max_seq_length": 512,
     "do_train": true,
@@ -26,6 +26,6 @@
     "adam_epsilon": 1e-6,
     "preprocessing_num_workers": 48,
     "fp16": true,
-    "model_name_or_path": "exps/roberta.malyuk.filter.wechsel.largedict.sophia",
+    "model_name_or_path": "exps/roberta.malyuk.filter.wechsel.largedict.sophia.run3",
     "optimizer": "sophia"
 }
