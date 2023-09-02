@@ -12,9 +12,9 @@
     "per_device_train_batch_size": 32,
     "per_device_eval_batch_size": 32,
     "gradient_accumulation_steps": 1,
-    "learning_rate": 2e-4,
+    "learning_rate": 5e-5,
     "evaluation_strategy": "steps",
-    "warmup_steps": 25000,
+    "warmup_steps": 9000,
     "max_steps": 1000000,
     "eval_steps": 500,
     "save_steps": 50000,
@@ -25,5 +25,7 @@
     "adam_beta2": 0.99,
     "adam_epsilon": 1e-6,
     "preprocessing_num_workers": 96,
-    "model_name_or_path": "exps/roberta.malyuk.filter.wechsel.largedict.tpu.run2"
+    "model_name_or_path": "exps/roberta.malyuk.filter.wechsel.largedict.tpu.run2",
+    "optimizer": "sophia",
+    "lr_scheduler_type": "cosine"
 }
