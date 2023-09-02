@@ -26,5 +26,5 @@
     "adam_epsilon": 1e-6,
     "preprocessing_num_workers": 96,
     "model_name_or_path": "exps/roberta.malyuk.filter.wechsel.largedict.tpu.run3",
-    "bf16": true,
+    "bf16": true
 }
