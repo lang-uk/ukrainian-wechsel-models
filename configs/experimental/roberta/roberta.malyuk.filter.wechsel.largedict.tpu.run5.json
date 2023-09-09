@@ -1,8 +1,8 @@
 {
-    "output_dir": "exps/roberta.malyuk.filter.wechsel.largedict.tpu.run4",
+    "output_dir": "exps/roberta.malyuk.filter.wechsel.largedict.tpu.run5",
     "model_type": "roberta",
-    "config_name": "exps/roberta.malyuk.filter.wechsel.largedict.tpu.run4",
-    "tokenizer_name": "exps/roberta.malyuk.filter.wechsel.largedict.tpu.run4",
+    "config_name": "exps/roberta.malyuk.filter.wechsel.largedict.tpu.run5",
+    "tokenizer_name": "exps/roberta.malyuk.filter.wechsel.largedict.tpu.run5",
     "train_file": "data/malyuk.filter",
     "max_seq_length": 512,
     "do_train": true,
@@ -12,9 +12,9 @@
     "per_device_train_batch_size": 38,
     "per_device_eval_batch_size": 38,
     "gradient_accumulation_steps": 1,
-    "learning_rate": 2e-4,
+    "learning_rate": 5e-5,
     "evaluation_strategy": "steps",
-    "warmup_steps": 12500,
+    "warmup_steps": 10000,
     "max_steps": 1000000,
     "eval_steps": 500,
     "save_steps": 50000,
@@ -25,7 +25,6 @@
     "adam_beta2": 0.99,
     "adam_epsilon": 1e-6,
     "preprocessing_num_workers": 96,
-    "model_name_or_path": "exps/roberta.malyuk.filter.wechsel.largedict.tpu.run4",
-    "bf16": true,
-    "lr_scheduler_type": "inverse_sqrt"
+    "model_name_or_path": "exps/roberta.malyuk.filter.wechsel.largedict.tpu.run5",
+    "bf16": true
 }
