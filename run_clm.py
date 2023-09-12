@@ -51,6 +51,11 @@ from transformers.trainer_utils import get_last_checkpoint
 from transformers.utils import check_min_version
 from transformers.utils.versions import require_version
 
+try:
+    import torch_xla.core.xla_model as xm
+except ImportError:
+    xm = None
+
 
 # Will error if the minimal version of Transformers is not installed. Remove at your own risks.
 check_min_version("4.18.0.dev0")
@@ -176,6 +181,9 @@ class DataTrainingArguments:
         metadata={"help": "The name of the project to which the training run will belong on Weights & Biases."}   
     )
 
+    optimizer: Optional[str] = field(
+        default="adam", metadata={"help": "The optimizer to use for training."}
+    )
 
 
 def main():
@@ -320,6 +328,8 @@ def main():
         logger.info(f"Training new model from scratch - Total size={n_params/2**20:.2f}M params")
 
     model.resize_token_embeddings(len(tokenizer))
+    if xm is not None:
+        model.to(xm.xla_device())
 
     # Preprocessing the datasets.
     # First we tokenize all the texts.
@@ -443,18 +453,44 @@ def main():
         wandb.config.update(data_args)
         wandb.save(__file__, policy="now")
 
-    # Initialize our Trainer
-    trainer = Trainer(
-        model=model,
-        args=training_args,
-        train_dataset=train_dataset if training_args.do_train else None,
-        eval_dataset=eval_dataset if training_args.do_eval else None,
-        tokenizer=tokenizer,
-        # Data collator will default to DataCollatorWithPadding, so we change it.
-        data_collator=default_data_collator,
-        compute_metrics=compute_metrics if training_args.do_eval else None,
-        preprocess_logits_for_metrics=preprocess_logits_for_metrics if training_args.do_eval else None,
-    )
+    if data_args.optimizer == "adam":
+        # Initialize our Trainer
+        trainer = Trainer(
+            model=model,
+            args=training_args,
+            train_dataset=train_dataset if training_args.do_train else None,
+            eval_dataset=eval_dataset if training_args.do_eval else None,
+            tokenizer=tokenizer,
+            # Data collator will default to DataCollatorWithPadding, so we change it.
+            data_collator=default_data_collator,
+            compute_metrics=compute_metrics if training_args.do_eval else None,
+            preprocess_logits_for_metrics=preprocess_logits_for_metrics if training_args.do_eval else None,
+        )
+    elif data_args.optimizer == "sophia":
+        from optimizers.sophia import SophiaG
+
+        optimizer = SophiaG(
+            filter(lambda p: p.requires_grad, model.parameters()),
+            lr=training_args.learning_rate,
+            weight_decay=training_args.weight_decay,
+            betas=(training_args.adam_beta1, training_args.adam_beta2),
+        )
+
+        trainer = Trainer(
+            model=model,
+            args=training_args,
+            train_dataset=train_dataset if training_args.do_train else None,
+            eval_dataset=eval_dataset if training_args.do_eval else None,
+            tokenizer=tokenizer,
+            data_collator=default_data_collator,
+            compute_metrics=compute_metrics if training_args.do_eval else None,
+            preprocess_logits_for_metrics=preprocess_logits_for_metrics
+            if training_args.do_eval
+            else None,
+            optimizers=(optimizer, None),
+        )
+    else:
+        raise ValueError("Optimizer not supported")
 
     # Training
     if training_args.do_train:
