@@ -262,7 +262,8 @@ def main():
 
     for (name, path) in [("train", data_args.train_file), ("validation", data_args.validation_file)]:
         if path.endswith(".txt"):
-            raw_datasets[name] = datasets.Dataset.from_dict({"text": [open(path).read()], "id": [0]})
+            # raw_datasets[name] = datasets.Dataset.from_dict({"text": [open(path).read()], "id": [0]})
+            raw_datasets[name] = datasets.Dataset.from_dict({"text": [open(path).read()], "compound_id": [0], "id": [0]})
         else:
             raw_datasets[name] = datasets.load_from_disk(data_args.train_file)
 

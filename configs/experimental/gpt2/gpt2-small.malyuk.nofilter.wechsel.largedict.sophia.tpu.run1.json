@@ -23,7 +23,7 @@
     "warmup_steps": 2000,
     "model_name_or_path": "exps/gpt2-small.malyuk.nofilter.wechsel.largedict.sophia.tpu.run1",
     "preprocessing_num_workers": 96,
-    "bf6": true,
+    "bf16": true,
     "adam_beta1": 0.965,
     "adam_beta2": 0.99,
     "optimizer": "sophia"
