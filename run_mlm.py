@@ -48,6 +48,7 @@ from transformers.trainer_utils import get_last_checkpoint
 from transformers.utils import check_min_version
 from transformers.utils.versions import require_version
 import wandb
+import torch_xla.core.xla_model as xm
 
 # Will error if the minimal version of Transformers is not installed. Remove at your own risks.
 check_min_version("4.18.0.dev0")
@@ -291,7 +292,7 @@ def main():
 
     for (name, path) in [("train", data_args.train_file), ("validation", data_args.validation_file)]:
         if path.endswith(".txt"):
-            raw_datasets[name] = datasets.Dataset.from_dict({"text": [open(path).read()], "id": [0]})
+            raw_datasets[name] = datasets.Dataset.from_dict({"text": [open(path).read()], "compound_id": [0], "id": [0]})
         else:
             raw_datasets[name] = datasets.load_from_disk(data_args.train_file)
 
@@ -351,6 +352,7 @@ def main():
         model = AutoModelForMaskedLM.from_config(config)
 
     model.resize_token_embeddings(len(tokenizer))
+    model.to(xm.xla_device())
 
     # Preprocessing the datasets.
     # First we tokenize all the texts.

@@ -11,3 +11,4 @@ eval/preprocess/
 data/
 bruk_corpus/
 .DS_Store
+exps/
